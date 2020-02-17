@@ -60,7 +60,6 @@ public class TS_NS_6706_ChangeInvoiceaddress extends BaseReport {
 
 		@Test
 		public void changeAddress() throws InterruptedException
-
 		{
 			System.out.println(XLTestData.get("NetSuite_URL").toString());	
 			System.out.println(XLTestData.get("NetEmail").toString());
@@ -69,7 +68,7 @@ public class TS_NS_6706_ChangeInvoiceaddress extends BaseReport {
 			//Launch URL
 			driver=oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(),XLTestData,"",basetest);
 
-			//Login Application to NetSuite
+			//Login Application
 			oLoginPage.NetSuiteLogin(driver, XLTestData,basetest);
 
 			//choosing role

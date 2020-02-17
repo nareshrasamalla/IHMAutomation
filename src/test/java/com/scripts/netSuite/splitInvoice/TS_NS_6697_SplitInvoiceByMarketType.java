@@ -22,7 +22,7 @@ import com.netsuite.common.NS_LoginPage;
 public class TS_NS_6697_SplitInvoiceByMarketType extends BaseReport{
 	private BaseTest basetest;
 	public static Excel_Reader excelReader;
-	public static int i=6698;
+	public static int i=6697;
 	int HistoryRowNumber=0;
 	int passCount=0, FailCount=0;
 	public static String TestDataPath="";
@@ -40,7 +40,7 @@ public class TS_NS_6697_SplitInvoiceByMarketType extends BaseReport{
 	}
 	@BeforeClass
 	public void test() throws FileNotFoundException, IOException {
-		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_RemoveAgencyCommission.xlsx";
+		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_SplitInvoice.xlsx";
 		System.out.println("Test Data Path: "+TestDataPath);
 		excelReader=new Excel_Reader(TestDataPath);
 		excelReader.cFileNameWithPath = TestDataPath;

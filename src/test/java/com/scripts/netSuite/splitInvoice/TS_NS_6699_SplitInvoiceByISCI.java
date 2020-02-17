@@ -40,7 +40,7 @@ public class TS_NS_6699_SplitInvoiceByISCI extends BaseReport{
 	}
 	@BeforeClass
 	public void test() throws FileNotFoundException, IOException {
-		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_RemoveAgencyCommission.xlsx";
+		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_SplitInvoice.xlsx";
 		System.out.println("Test Data Path: "+TestDataPath);
 		excelReader=new Excel_Reader(TestDataPath);
 		excelReader.cFileNameWithPath = TestDataPath;
