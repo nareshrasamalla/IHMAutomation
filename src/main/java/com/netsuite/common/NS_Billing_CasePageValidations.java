@@ -1,5 +1,7 @@
 package com.netsuite.common;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class NS_Billing_CasePageValidations {
 	String invoiceCMsTable = "//table[starts-with(@id,'customsublist')]/tbody/tr";
 	String invoiceNoLink ="(//span[@id='custevent_ihm_case_inv_no_fs_lbl_uir_label']/following::span)[1]";
 	String invoiceCMS 	= 	"//span[@class='inputreadonly']/a[contains(text(),'Invoice')]";
-
+    String approve_btn  = "(//input[@type='button' and @value='Approve'])[1]";
 
 	//Issue Credit to client
 	String preference = "//input[@name='inpt_newinvoicerequired']";
@@ -53,6 +55,10 @@ public class NS_Billing_CasePageValidations {
 	String autoApproval = "//span[@id='custevent_case_approval_fs_lbl_uir_label']/following::span[1]/span";
 	String adjustmentAmount = "//span[@id='custevent_ihm_adjamount_fs_lbl']/following::span[1]";
 	String invoiceTotalamount = "//span[@id='custevent_inv_total_amt_fs_lbl']/following::span[1]";
+	
+	//Issue credit to client case page validations
+	String invoiceRemainingamount= "//span[@id='custevent_ihm_adjamount_fs_lbl']/following::span[4]";
+	String amountdue_InSummary   = "//span[@id='amountremainingtotalbox_fs_lbl_uir_label']/following::span[1]";
 
 	public void casePageValidations(WebDriver driver,String splitingType,String invoiceNo,String caseNumberText,BaseTest basetest) {
 		String splitTypeCheckBox="";
@@ -254,6 +260,88 @@ public class NS_Billing_CasePageValidations {
 			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Invoice Total  Amount is Displayed Incorrectly"+"'</span>");
 		}
 
+	}
+	
+	public void autoapprovalWorkFlowValidations(WebDriver driver,HashMap<String,String> XLTestData,BaseTest basetest) throws InterruptedException
+	{
+
+		WebElement Element = driver.findElement(By.xpath(autoApproval));
+
+		if(Element.getText().contains("Approved"))
+		{
+			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  is Auto Approved"+"'</span>");
+		}else {
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Invoice  is Not Auto Approved"+"'</span>");
+		}
+	}
+	
+	public void click_Approve(WebDriver driver,BaseTest basetest){
+		gen.clickButton(driver, By.xpath(approve_btn), "approve button", basetest);
+		gen.waiForPageLoad(5);
+	}
+	
+	public void verifyStatusInInvoicesAndCMs(WebDriver driver,BaseTest basetest)
+	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,1500)");
+		gen.clickButton(driver, By.xpath(invoicesOrCMS),"Click on Invoice/CMs",basetest);
+
+		gen.waiForPageLoad(5);
+		
+		String statusTxt = gen.getTextOfElement(driver, statusInCasePage);
+		if (statusTxt.contains("Fully Applied")) {
+			basetest.test.log(Status.PASS, "Status :<span style='font-weight:bold;color:blue'>" + statusTxt + "</span> is displayed");
+		} else {
+			basetest.test.log(Status.FAIL, "Status :<span style='font-weight:bold;color:blue'>" + statusTxt + " </span>is displayed");
+		}
+		
+		
+		
+	}
+	public void validate_Amountdue(WebDriver driver,HashMap<String,String> XLTestData,BaseTest basetest) throws InterruptedException
+	{
+		//Get Adjustment amount
+		WebElement adjustmentamount = driver.findElement(By.xpath(adjustmentAmount));
+		String adjustmentamount_text = adjustmentamount.getText();
+		String adjustmentamount_replace = adjustmentamount_text.replace(",", "");
+		Float adjustmentamount_float = Float.parseFloat(adjustmentamount_replace);
+		
+		// Get invoiceRemainingamount
+		WebElement invoiceRemainingAmt = driver.findElement(By.xpath(invoiceRemainingamount));
+		String invoiceRemainingAmt_text = invoiceRemainingAmt.getText();
+		String invoiceRemainingAmt_replace = invoiceRemainingAmt_text.replace(",", "");
+		Float invoiceremainingAmount_float = Float.parseFloat(invoiceRemainingAmt_replace);
+		//click on Invoice Number
+		clickInvoiceNumber( driver, basetest); 
+		gen.waiForPageLoad(5);
+		
+		//Get Amount due
+		WebElement amountdue_insummary = driver.findElement(By.xpath(amountdue_InSummary));
+		String amountdue_insummary_text = amountdue_insummary.getText();
+		String amountdue_insummary_replace = amountdue_insummary_text.replace(",", "");
+		Float amountdue_insummary_float = Float.parseFloat(amountdue_insummary_replace);
+		
+		//truncating last decimal value in Amountdue_insummary
+		BigDecimal fd = new BigDecimal(amountdue_insummary_float);
+		BigDecimal cutted = fd.setScale(1, RoundingMode.DOWN);
+		amountdue_insummary_float = cutted.floatValue();
+		
+		//calculating Remaing amount after Adjusting amount
+		Float remainigamount = invoiceremainingAmount_float-adjustmentamount_float;
+		
+		BigDecimal fd2 = new BigDecimal(remainigamount);
+		BigDecimal cutted2 = fd.setScale(1, RoundingMode.DOWN);
+		remainigamount = cutted.floatValue();
+		
+		
+		if(amountdue_insummary_float.equals(remainigamount))
+		{
+			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Amount due and Invoice amount after Adjustment matched"+"'</span>");
+		}else {
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Amount due and Invoice amount after Adjustment Not matched"+"'</span>");
+		}
+		
+		
 	}
 
 }

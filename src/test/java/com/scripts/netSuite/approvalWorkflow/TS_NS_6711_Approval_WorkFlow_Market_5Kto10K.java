@@ -21,7 +21,7 @@ public class TS_NS_6711_Approval_WorkFlow_Market_5Kto10K {
 	
 	private BaseTest basetest;
 	public static Excel_Reader excelReader;
-	public static int i=2225;
+	public static int i=6711;
 	int HistoryRowNumber=0;
 	int passCount=0, FailCount=0;
 	public static String TestDataPath="";

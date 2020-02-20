@@ -26,10 +26,10 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 	String elementSB2 				= 	"//div[@id='ns-dashboard-heading-panel']/h1";
 
 	//Searching salesorder And Admin Locators
-	String SB2Admin 				= 	"//span[contains(text(),'SB1 Dev1 - iHeartMedia  -  Administrator')]";
-	String SB4QAAdmin               =   "//span[contains(text(),'SB4 QA - iHeartMedia  -  Administrator')]";
 
-	String SB1FinanceManager		=   "//span[contains(text(),'SB4 QA - iHeartMedia  -  Administrator')]";
+	String SB2Admin 				= 	"//span[contains(text(),'SB1 Dev1 - iHeartMedia  -  Administrator')]";
+	String SB5Admin                 =   "//span[contains(text(),'SB5 20.1 Upgrade - iHeartmedia  -  Administrator')]";
+
 
 	// Billing and Remove Agency Commission flow
 	String removeAgencyCommision   =   "//div[text()='Remove Agency Commission']";
@@ -41,7 +41,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 	String adjustmentPage				=	"//h1[contains(text(),'Adjustments')]";
 	String secondarynext                =  "//input[@id='secondarynext']";
 	String addOrRemoveAgencyCommision 	= 	"(//input[@title='Add or Remove Agency Commission'])[1]";
-	String adjustmentReasonGeneral 		= 	"//input[@name='inpt_adjcode12']";
+	String adjustmentReasonGeneral 		= 	"(//div[@class='uir-select-input-container'])[9]/input";
 	String agencyCommision 				= 	"//div[@class='dropdownDiv']/div[text()='Agency Commission']";
 	String next    						= 	"//input[@name='next']";
 	String agencyCommisNextBtn 			= 	"//input[@name='secondarynext']";
@@ -90,6 +90,20 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 	String adjustmentAmount = "//span[@id='custevent_ihm_adjamount_fs_lbl']/following::span[1]";
 	String invoiceTotalamount = "//span[@id='custevent_inv_total_amt_fs_lbl']/following::span[1]";
 
+	//Locators for Search case And Changing Roles
+	String SB1FinanceManager				= 	"//span[contains(text(),'SB5 20.1 Upgrade - iHeartmedia  -  iHM Market Finance Manager-SSO')]";
+	String searchboxCase                   = "//input[@id='_searchstring']";
+	String showItems                       = "//a[@id='showMoreItems']";
+	String   caseView                          = "//td[text()='Case']/../td/a[2]";
+	String SB1iHMRefundsSpecialist       =  "//span[contains(text(),'SB5 20.1 Upgrade - iHeartmedia  -  iHM Refunds and Adjustment Specialist-SSO')]";
+	String SB1iHMRefundsmanager       =     "//span[contains(text(),'SB5 20.1 Upgrade - iHeartmedia  -  iHM Refunds and Adjustment Manager-SSO')]";
+	String SB1BillingManager          =     "//span[contains(text(),'SB5 20.1 Upgrade - iHeartmedia  -  iHM Billing Manager-SSO')]";
+	//Locators for Credit_Revise_Invoice_Under_10k
+	String ratechange        = "//a[text()='Rate Change']";
+	String revisedAmount       = "(//input[@id='rate_formattedValue'])[1]";
+	//Locators for Adjustment Request
+	String adjustmentRequest = "//li[@data-title='Adjustment Request']";
+    String fullcredit_checkbox ="//input[@id='invoicelines_linefullcredit_fs_inp']/following::img[1]";
 
 
 	/*
@@ -107,7 +121,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 			oGenericUtils.navigateMouseToElement(driver, By.id(adminElement),"Admin Button in Netsuite Home page",basetest);
 
 			//Click on Administartor 
-			oGenericUtils.clickButton(driver, By.xpath("(//span[text()='"+XLTestData.get("UserRole")+"'])[1]"),"Adminstartor", basetest);
+				//oGenericUtils.clickButton(driver, By.xpath("(//span[text()='"+XLTestData.get("UserRole")+"'])[1]"),"Adminstartor", basetest);
 
 
 
@@ -273,7 +287,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 		oGenericUtils.waiForPageLoad(6);
 
 
-		
+
 
 	}
 
@@ -316,16 +330,16 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 			oGenericUtils.waiForPageLoad(6);
 			//clicking on OK Alert
 			oGenericUtils.isAlertPresent(driver);
-
+			oGenericUtils.waiForPageLoad(6);
 			//Agencyselection
-			oGenericUtils.clickButton(driver, By.xpath(adjustmentReasonGeneral),"Click on Adjustment Reason General",basetest);
+			//oGenericUtils.clickButton(driver, By.xpath(adjustmentReasonGeneral),"Click on Adjustment Reason General",basetest);
 			String typeofagency = "//div[contains(text(),'"+XLTestData.get("Agencyselection")+"')]";
 			oGenericUtils.clickButton(driver, By.xpath(typeofagency),"Adjustment Reason General",basetest);
 
 			//click on next
 			oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
 
-			oGenericUtils.waiForPageLoad(10);
+			oGenericUtils.waiForPageLoad(6);
 			String invoicePage = "//span[@id='invnum_text_fs_lbl']/a[contains(text(),'Invoice Number')]";
 
 			if(driver.findElements(By.xpath(invoicePage)).size()>0){
@@ -340,7 +354,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 			//click on Search Invoice
 			oGenericUtils.clickButton(driver, By.xpath(searchInvoice),"Click on Invoice Search",basetest);
 
-			oGenericUtils.waiForPageLoad(18);
+			oGenericUtils.waiForPageLoad(30);
 
 			WebElement invoiceElement = driver.findElement(By.xpath(invoiceNumberText));
 
@@ -357,7 +371,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 			oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
 
 
-			oGenericUtils.waiForPageLoad(9);
+			oGenericUtils.waiForPageLoad(20);
 			if(driver.findElements(By.xpath(agencyCommisionOptions)).size()>0){
 				basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page verifeid successfully"+"'</span>");
 			}else {
@@ -375,7 +389,8 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 					String headText = driver.findElement(By.xpath("(//table[@id='invoicelines_splits']/tbody/tr/td/div)["+j+"]")).getText().trim();
 					if(headText.contains("REVISED NET AMOUNT")){
 						String text = oGenericUtils.getTextOfElement(driver, "//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]");						
-						beforeRevisedNetAmt.add(Float.parseFloat(text));
+						String text2 = text.replace(",","");
+						beforeRevisedNetAmt.add(Float.parseFloat(text2));
 						break;
 					}
 				}
@@ -420,6 +435,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 			}else if(adjmentAmtValue.contains("+")){
 				adjmentAmtValue = adjmentAmtValue.replace("+", "");
 			}
+			adjmentAmtValue = adjmentAmtValue.replace(",", "");
 			float adjmentAmtValueInDecimal = Float.parseFloat(adjmentAmtValue);
 
 			ArrayList<Float> netCreditAmtDecimal = new ArrayList<Float>();
@@ -440,6 +456,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 				}else if(netCreditAmtText.contains("+")){
 					netCreditAmtText = netCreditAmtText.replace("+", "");
 				}
+				netCreditAmtText = netCreditAmtText.replace(",", "");
 				float netCreditAmount=Float.parseFloat(netCreditAmtText);
 				netCreditAmtDecimal.add(netCreditAmount);
 				totalNetCreditAmount=totalNetCreditAmount+netCreditAmount;
@@ -463,7 +480,8 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 					String headText = driver.findElement(By.xpath("(//table[@id='invoicelines_splits']/tbody/tr/td/div)["+j+"]")).getText().trim();
 					if(headText.contains("REVISED NET AMOUNT")){
 						String text = oGenericUtils.getTextOfElement(driver, "//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]");
-						aftereRevisedNetAmt.add(Float.parseFloat(text));
+						String text2 = text.replace(",", "");
+						aftereRevisedNetAmt.add(Float.parseFloat(text2));
 						break;
 					}
 				}
@@ -532,12 +550,53 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 		}
 		return grossValueFormated+";"+adjmentAmtValue+";"+netValueFormated;	
 	}
+	public void enableAutomaticPDFDownload(WebDriver driver) throws AWTException, InterruptedException{
+
+        ((JavascriptExecutor)driver).executeScript("window.open()");
+        ArrayList<String> tabList = new ArrayList<String>(driver.getWindowHandles());
+        int numberOfWindows = tabList.size();
+        System.out.println(numberOfWindows);
+        driver.switchTo().window(tabList.get(numberOfWindows-1));
+        driver.get("chrome://settings/content/pdfDocuments");
+        WebElement settingsUIRoot = driver.findElement(By.xpath("//settings-ui"));
+        WebElement shadowRoot1 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",settingsUIRoot);
+        WebElement settingsMainRoot = shadowRoot1.findElement(By.cssSelector("settings-main"));
+        WebElement shadowRoot2 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",settingsMainRoot);
+        WebElement settingsBasicPageRoot = shadowRoot2.findElement(By.cssSelector("settings-basic-page"));
+        WebElement shadowRoot3 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",settingsBasicPageRoot);
+        WebElement settingsPrivacyPageRoot = shadowRoot3.findElement(By.cssSelector("settings-privacy-page"));
+        WebElement shadowRoot4 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",settingsPrivacyPageRoot);
+        WebElement settingsPDFDocumentsRoot = shadowRoot4.findElement(By.cssSelector("settings-pdf-documents"));
+        WebElement shadowRoot5 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",settingsPDFDocumentsRoot);
+        WebElement settingsToggleButtonRoot = shadowRoot5.findElement(By.cssSelector("settings-toggle-button"));
+        WebElement shadowRoot6 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",settingsToggleButtonRoot);    
+        WebElement crToggleRoot = shadowRoot6.findElement(By.cssSelector("cr-toggle"));
+        WebElement shadowRoot7 = (WebElement)((JavascriptExecutor)driver).executeScript("return arguments[0].shadowRoot",crToggleRoot);
+        WebElement enableDownloadButton = shadowRoot7.findElement(By.cssSelector("#knob"));
+        boolean button= enableDownloadButton.isSelected();
+        if(button==false){
+            enableDownloadButton.click();
+        }
+        //driver.findElement(By.id("knob")).click();
+
+        //keyboard operation is working fine for selecting automatic download option
+        /*Robot robot = new Robot();  // Robot class throws AWT Exception    
+        Thread.sleep(2000); 
+        robot.keyPress(KeyEvent.VK_TAB);  
+        Thread.sleep(2000);  
+        robot.keyPress(KeyEvent.VK_TAB);  
+        Thread.sleep(2000);  
+        robot.keyPress(KeyEvent.VK_ENTER);*/
+       Thread.sleep(18000);
+
+        driver.switchTo().window(tabList.get(numberOfWindows-2));
+ }
 
 
 	public void clickPDFDownloadLink(WebDriver driver,BaseTest basetest) throws InterruptedException, AWTException{
 
 		oGenericUtils.waiForPageLoad(15);
-		//enableAutomaticPDFDownload(driver);
+		enableAutomaticPDFDownload(driver);
 
 		//click on Adjustment
 		oGenericUtils.clickButton(driver, By.xpath(downloadpdflink),"Click on Adjustment",basetest);
@@ -929,6 +988,11 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 
 		oGenericUtils.waiForPageLoad(8);
 
+		caseValidations.approvalWorkFlowValidations( driver, XLTestData, basetest);
+
+
+
+
 	}
 
 	/*##############################################################
@@ -977,7 +1041,17 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 		}
 		return homepageurl;
 	}
+	public void searchCase(WebDriver driver,String caseNumber,BaseTest basetest) throws InterruptedException
+	{
+		oGenericUtils.SetVal(driver, By.xpath(searchboxCase), caseNumber.toString(),"Searching the case Number",basetest);
+		oGenericUtils.waiForPageLoad(7);
+		//click on ShowMore Items
+		oGenericUtils.clickButton(driver, By.xpath(showItems),"Click on Show More Items",basetest);
+		oGenericUtils.waiForPageLoad(7);
+		//click on ShowMore Items
+		oGenericUtils.clickButton(driver, By.xpath(caseView ),"Click on Case View",basetest);
 
+	}
 
 	public void approvalWorkFlowover10k(WebDriver driver,HashMap<String,String> XLTestData,BaseTest basetest) throws InterruptedException
 	{
@@ -1060,7 +1134,11 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 		//Enter Comments
 
 		oGenericUtils.setText(driver, Comments, "QA");
+		
+		//click on finish
+				oGenericUtils.clickButton(driver, By.xpath(finish),"Click on finish",basetest);
 
+				
 		oGenericUtils.waiForPageLoad(12);
 
 		String caseNumberText =  oGenericUtils.getTextOfElement(driver, caseNumber);
@@ -1074,7 +1152,7 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 
 		WebElement Element = driver.findElement(By.xpath(autoApproval));
 
-		if(Element.getText().contains("Pending Approval From Finance"))
+		if(Element.getText().contains("Pending Approval"))
 		{
 			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  is Partially Approved"+"'</span>");
 		}else {
@@ -1083,10 +1161,547 @@ public class NS_Billing_AdjustmentAndSpecialBilling  {
 
 		//choosing role to iHM Market Finance Manager-SSO
 		changeRole_to_Different_Administrators(driver, XLTestData, basetest,SB1FinanceManager);
+		oGenericUtils.waiForPageLoad(8);
+
+		//click on case number View
+		searchCase(driver,caseNumberText,basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+
+		//choosing role to iHM SB1iHM Refunds Specialist-SSO
+		changeRole_to_Different_Administrators(driver, XLTestData, basetest,SB1iHMRefundsSpecialist);
+		oGenericUtils.waiForPageLoad(8);
+		//click on case number View
+		searchCase(driver,caseNumberText,basetest);
+		
+		oGenericUtils.waiForPageLoad(8);
+		
+		caseValidations.click_Approve( driver, basetest);
+
+		oGenericUtils.waiForPageLoad(12);
+ 
+
+		//choosing role to iHM SB1iHM Refunds Manager-SSO
+		changeRole_to_Different_Administrators(driver, XLTestData, basetest,SB1iHMRefundsmanager);
+		oGenericUtils.waiForPageLoad(8);
+		//click on case number View
+		searchCase(driver,caseNumberText,basetest);
+		
+		caseValidations.click_Approve(driver, basetest);
+		
+		
+		oGenericUtils.waiForPageLoad(12);
+		
+		caseValidations.verifyStatusInInvoicesAndCMs( driver, basetest);
+		
+		
+
+	}
+
+	public void approvalWorkFlow_CreditRevise_invoice_Under5k(WebDriver driver,HashMap<String,String> XLTestData,BaseTest basetest) throws InterruptedException
+	{
+		//click on Adjustment
+		oGenericUtils.clickButton(driver, By.xpath(adjustment),"Click on Adjustment",basetest);
+
+		//wait until page load
+		oGenericUtils.WaitUntilElement(driver, By.xpath(adjustmentPage), "Adjustment Page", basetest);
+
+		oGenericUtils.waiForPageLoad(7);
+		//click on select Adjustment Type
+		oGenericUtils.clickButton(driver, By.xpath(selectAdjArrow),"Click on Select Adjustment Type",basetest);
+
+		String typeofAdjustment = "//div[contains(text(),'"+XLTestData.get("Scenario")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofAdjustment),"Type of Invoice Adjustment Slection",basetest);
+		oGenericUtils.waiForPageLoad(5);
+
+
+		oGenericUtils.clickButton(driver, By.xpath(preference),"Type of Preference",basetest);
+		String typeofPreference = "//div[contains(text(),'"+XLTestData.get("preference")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofPreference),"Click on Select Preference Type",basetest);
+		oGenericUtils.waiForPageLoad(6);
+		//clicking on OK Alert
+		oGenericUtils.isAlertPresent(driver);
+
+		oGenericUtils.waiForPageLoad(5);
+
+		//Agency selection
+		oGenericUtils.clickButton(driver, By.xpath(adjustmentReasonGeneral),"Click on Adjustment Reason General",basetest);
+		String typeofagency = "//div[contains(text(),'"+XLTestData.get("AdjustmentReasonGeneral")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofagency),"Adjustment Reason General",basetest);
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(9);
+
+		oGenericUtils.waiForPageLoad(10);
+
+
+		if(driver.findElements(By.xpath(invoicePage)).size()>0){
+			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page verifeid successfully"+"'</span>");
+		}else {
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page Not verifeid"+"'</span>");
+		}
+
+		oGenericUtils.SetVal(driver, By.xpath(invoiceNumber), XLTestData.get("invoiceNumber").toString(),"Invoice Text Box",basetest);
+
+		//click on Search Invoice
+		oGenericUtils.clickButton(driver, By.xpath(searchInvoice),"Click on Invoice Search",basetest);
+
+		oGenericUtils.waiForPageLoad(50);
+		WebElement invoiceElement = driver.findElement(By.xpath(invoiceNumberText));
+
+		String invoiceNumberText = invoiceElement.getAttribute("previousvalue");
+
+		if(invoiceNumberText.contains("#"))
+
+			Assert.assertTrue("Invoice Verified Successfully", true);
+		else
+			Assert.assertFalse("InvoiceNotVerified", false);
+
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(30);
+
+
+		//click on full credit
+		oGenericUtils.clickButton(driver, By.xpath(ratechange),"Click on RateChange",basetest);
+
+		oGenericUtils.waiForPageLoad(25);
+
+		String invoiceamt = driver.findElement(By.xpath(invoiceAmount)).getAttribute("value");
+
+		List<WebElement> lineAdjustTableRowCount=driver.findElements(By.xpath(lineAdjustTable));
+		lineAdjustTableRowCount=driver.findElements(By.xpath(lineAdjustTable));
+
+		int  size =lineAdjustTableRowCount.size();
+		boolean flag=false;
+		for(int i=1; i<=size ; i++){
+			List<WebElement> tableHead = driver.findElements(By.xpath("//table[@id='invoicelines_splits']/tbody/tr/td/div"));
+			int headSize = tableHead.size();
+			for(int j=1;j<=headSize;j++){
+				String headText = driver.findElement(By.xpath("(//table[@id='invoicelines_splits']/tbody/tr/td/div)["+j+"]")).getText().trim();
+				if(headText.contains("REVISED RATE")){
+					//String text = oGenericUtils.getTextOfElement(driver, "//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]");						
+					//click on Ok button
+					oGenericUtils.clickButton(driver, By.xpath("//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]"),"Click on NET CREDIT AMOUNT",basetest);
+					oGenericUtils.waiForPageLoad(2);
+
+					String RevisedRate = driver.findElement(By.xpath(revisedAmount)).getAttribute("value").trim();
+					String Rate = RevisedRate.replace(",", "");
+					Float Revised = Float.parseFloat(Rate);
+					String adjustamount = XLTestData.get("AdjustmentAmount");
+					String Adjamt = adjustamount.replace(",", "");
+					Float adjsutedamount = Float.parseFloat(Adjamt);
+					Float RevisedRateNet = (float) (Revised - adjsutedamount);
+					driver.findElement(By.xpath(revisedAmount)).clear();
+					oGenericUtils.waiForPageLoad(2);
+					oGenericUtils.SetVal(driver, By.xpath(revisedAmount), RevisedRateNet.toString(),"Change Revised Rate Amount",basetest);
+					oGenericUtils.waiForPageLoad(2);
+					//click on Ok button
+					oGenericUtils.clickButton(driver, By.xpath(ok_btn),"Click on Ok Button",basetest);
+					flag = true;
+					break;
+				}
+			}
+			if(flag==true)
+				break;
+
+		}
+
+
+
+
+
+
+
+		oGenericUtils.waiForPageLoad(2);
+		oGenericUtils.clickButton(driver, By.xpath(adjustmentPage),"Click on Adjustments",basetest);
+		oGenericUtils.waiForPageLoad(2);
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(secondarynext),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(10);
+
+
+		//Enter Comments
+
+		oGenericUtils.setText(driver, Comments, "QA");
+
+		//click on finish
+		oGenericUtils.clickButton(driver, By.xpath(finish),"Click on finish",basetest);
+
+		oGenericUtils.waiForPageLoad(12);
+
+		String caseNumberText =  oGenericUtils.getTextOfElement(driver, caseNumber);
+		if(caseNumberText.length()>0){
+			basetest.test.log(Status.INFO, "Case Number :"+caseNumberText);
+		}
+		oGenericUtils.waiForPageLoad(6);
+		oGenericUtils.clickButton(driver, By.xpath(goToButton), "Go To Case", basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+
+
+
+		caseValidations.autoapprovalWorkFlowValidations( driver, XLTestData, basetest);
+
 
 
 
 	}
+
+	public void approvalWorkFlow_CreditRevise_invoice_over10k(WebDriver driver,HashMap<String,String> XLTestData,BaseTest basetest) throws InterruptedException
+	{
+		//click on Adjustment
+		oGenericUtils.clickButton(driver, By.xpath(adjustment),"Click on Adjustment",basetest);
+
+		//wait until page load
+		oGenericUtils.WaitUntilElement(driver, By.xpath(adjustmentPage), "Adjustment Page", basetest);
+
+		oGenericUtils.waiForPageLoad(7);
+		//click on select Adjustment Type
+		oGenericUtils.clickButton(driver, By.xpath(selectAdjArrow),"Click on Select Adjustment Type",basetest);
+
+		String typeofAdjustment = "//div[contains(text(),'"+XLTestData.get("Scenario")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofAdjustment),"Type of Invoice Adjustment Slection",basetest);
+		oGenericUtils.waiForPageLoad(5);
+
+
+		oGenericUtils.clickButton(driver, By.xpath(preference),"Type of Preference",basetest);
+		String typeofPreference = "//div[contains(text(),'"+XLTestData.get("preference")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofPreference),"Click on Select Preference Type",basetest);
+		oGenericUtils.waiForPageLoad(6);
+		//clicking on OK Alert
+		oGenericUtils.isAlertPresent(driver);
+
+		oGenericUtils.waiForPageLoad(5);
+
+		//Agency selection
+		oGenericUtils.clickButton(driver, By.xpath(adjustmentReasonGeneral),"Click on Adjustment Reason General",basetest);
+		String typeofagency = "//div[contains(text(),'"+XLTestData.get("AdjustmentReasonGeneral")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofagency),"Adjustment Reason General",basetest);
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(9);
+
+		oGenericUtils.waiForPageLoad(10);
+
+
+		if(driver.findElements(By.xpath(invoicePage)).size()>0){
+			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page verifeid successfully"+"'</span>");
+		}else {
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page Not verifeid"+"'</span>");
+		}
+
+		oGenericUtils.SetVal(driver, By.xpath(invoiceNumber), XLTestData.get("invoiceNumber").toString(),"Invoice Text Box",basetest);
+
+		//click on Search Invoice
+		oGenericUtils.clickButton(driver, By.xpath(searchInvoice),"Click on Invoice Search",basetest);
+
+		oGenericUtils.waiForPageLoad(50);
+		WebElement invoiceElement = driver.findElement(By.xpath(invoiceNumberText));
+
+		String invoiceNumberText = invoiceElement.getAttribute("previousvalue");
+
+		if(invoiceNumberText.contains("#"))
+
+			Assert.assertTrue("Invoice Verified Successfully", true);
+		else
+			Assert.assertFalse("InvoiceNotVerified", false);
+
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(30);
+
+
+		//click on full credit
+		oGenericUtils.clickButton(driver, By.xpath(ratechange),"Click on RateChange",basetest);
+
+		oGenericUtils.waiForPageLoad(25);
+
+		String invoiceamt = driver.findElement(By.xpath(invoiceAmount)).getAttribute("value");
+
+		if(XLTestData.get("linetype").contains("national"))
+		{
+		List<WebElement> lineAdjustTableRowCount=driver.findElements(By.xpath(lineAdjustTable));
+		lineAdjustTableRowCount=driver.findElements(By.xpath(lineAdjustTable));
+
+		int  size =lineAdjustTableRowCount.size();
+		boolean flag=false;
+		for(int i=1; i<=size ; i++){
+			List<WebElement> tableHead = driver.findElements(By.xpath("//table[@id='invoicelines_splits']/tbody/tr/td/div"));
+			int headSize = tableHead.size();
+			for(int j=1;j<=headSize;j++){
+				String headText = driver.findElement(By.xpath("(//table[@id='invoicelines_splits']/tbody/tr/td/div)["+j+"]")).getText().trim();
+				if(headText.contains("REVISED RATE")){
+					//String text = oGenericUtils.getTextOfElement(driver, "//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]");						
+					//click on Ok button
+					oGenericUtils.clickButton(driver, By.xpath("//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]"),"Click on NET CREDIT AMOUNT",basetest);
+					oGenericUtils.waiForPageLoad(2);
+
+					String RevisedRate = driver.findElement(By.xpath(revisedAmount)).getAttribute("value").trim();
+					String Rate = RevisedRate.replace(",", "");
+					Float Revised = Float.parseFloat(Rate);
+					String adjustamount = XLTestData.get("AdjustmentAmount");
+					String Adjamt = adjustamount.replace(",", "");
+					Float adjsutedamount = Float.parseFloat(Adjamt);
+					Float RevisedRateNet = (float) (Revised - adjsutedamount);
+					driver.findElement(By.xpath(revisedAmount)).clear();
+					oGenericUtils.waiForPageLoad(2);
+					oGenericUtils.SetVal(driver, By.xpath(revisedAmount), RevisedRateNet.toString(),"Change Revised Rate Amount",basetest);
+					oGenericUtils.waiForPageLoad(2);
+					//click on Ok button
+					oGenericUtils.clickButton(driver, By.xpath(ok_btn),"Click on Ok Button",basetest);
+					flag = true;
+					break;
+				}
+			}
+			if(flag==true)
+				break;
+
+		}
+
+
+
+
+
+
+
+		oGenericUtils.waiForPageLoad(2);
+		oGenericUtils.clickButton(driver, By.xpath(adjustmentPage),"Click on Adjustments",basetest);
+		oGenericUtils.waiForPageLoad(2);
+		
+		}
+		else
+		{
+			//click on full credit
+			oGenericUtils.clickButton(driver, By.xpath(fullCreditcheck),"Click on Full Credit Button",basetest);
+
+			oGenericUtils.waiForPageLoad(5);
+		}
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(secondarynext),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(10);
+
+
+		//Enter Comments
+
+		oGenericUtils.setText(driver, Comments, "QA");
+
+		//click on finish
+		oGenericUtils.clickButton(driver, By.xpath(finish),"Click on finish",basetest);
+
+		oGenericUtils.waiForPageLoad(12);
+
+		String caseNumberText =  oGenericUtils.getTextOfElement(driver, caseNumber);
+		if(caseNumberText.length()>0){
+			basetest.test.log(Status.INFO, "Case Number :"+caseNumberText);
+		}
+		oGenericUtils.waiForPageLoad(6);
+		oGenericUtils.clickButton(driver, By.xpath(goToButton), "Go To Case", basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+		WebElement Element = driver.findElement(By.xpath(autoApproval));
+
+		if(Element.getText().contains("Pending Approval From Finance"))
+		{
+			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  is Partially Approved"+"'</span>");
+		}else {
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Invoice  is Auto Approved"+"'</span>");
+		}
+
+		//choosing role to iHM Market Finance Manager-SSO
+		changeRole_to_Different_Administrators(driver, XLTestData, basetest,SB1BillingManager );
+		oGenericUtils.waiForPageLoad(8);
+
+		searchCase( driver, caseNumberText, basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+		
+		
+		}
+	
+	/*##############################################################
+	 @Descriptions 		---	Select Adjustment Request in Billing via Admin role
+	 @param driver 		---	WebDriver parameter
+	 @param XLTestData 	---	Test Data Parameter
+	 @param basetest 	---	Report Parameter
+	 ##############################################################*/
+	public void selectAdjRequestInBilling(WebDriver driver,HashMap<String, String> XLTestData,BaseTest basetest) {
+
+		try {	
+
+			//webdriver waiting
+			oGenericUtils.waiForPageLoad(5);
+
+			//Move to Transactions
+			oGenericUtils.navigateMouseToElement(driver, By.xpath(transaction),"Transactions",basetest);
+
+			//Move to Billing
+			oGenericUtils.navigateMouseToElement(driver, By.xpath(billing),"Billing",basetest);
+
+			//Move to Adjustment / Special Billing
+			oGenericUtils.navigateMouseToElement(driver, By.xpath(adjustmentRequest),"Adjustment / Special Billing",basetest);
+
+			//click on Adjustment / Special Billing
+			oGenericUtils.clickButton(driver, By.xpath(adjustmentRequest),"Adjustment Request",basetest);
+
+			//Page validation
+			if(driver.findElements(By.xpath(adjustment)).size()>0)
+			{	
+				basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'>'"+"Differnt Billing Request Page Loded Succesfully"+"'</span>");
+			}
+			else
+			{
+				basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+"Differnt Billing Request Page Loded Succesfully"+"'</span>");
+			}
+
+		}catch(Exception e) {
+			oGenericUtils.Verify("Object not found:="+e.getMessage(),"FAILED",basetest);
+		}	
+	}	
+
+	public void issueCreditToClient_PartialPaid_Digital(WebDriver driver,HashMap<String,String> XLTestData,BaseTest basetest) throws InterruptedException
+	{
+		oGenericUtils.waiForPageLoad(7);
+		//click on select Adjustment Type
+		oGenericUtils.clickButton(driver, By.xpath(selectAdjArrow),"Click on Select Adjustment Type",basetest);
+
+		String typeofAdjustment = "//div[contains(text(),'"+XLTestData.get("Scenario")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofAdjustment),"Type of Invoice Adjustment Slection",basetest);
+		oGenericUtils.waiForPageLoad(5);
+
+
+		oGenericUtils.clickButton(driver, By.xpath(preference),"Type of Preference",basetest);
+		String typeofPreference = "//div[contains(text(),'"+XLTestData.get("preference")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofPreference),"Click on Select Preference Type",basetest);
+		oGenericUtils.waiForPageLoad(6);
+		//clicking on OK Alert
+		oGenericUtils.isAlertPresent(driver);
+
+		oGenericUtils.waiForPageLoad(5);
+
+		//Agency selection
+		oGenericUtils.clickButton(driver, By.xpath(adjustmentReasonGeneral),"Click on Adjustment Reason General",basetest);
+		String typeofagency = "//div[contains(text(),'"+XLTestData.get("AdjustmentReasonGeneral")+"')]";
+		oGenericUtils.clickButton(driver, By.xpath(typeofagency),"Adjustment Reason General",basetest);
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(9);
+
+		oGenericUtils.waiForPageLoad(10);
+
+
+		if(driver.findElements(By.xpath(invoicePage)).size()>0){
+			basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page verifeid successfully"+"'</span>");
+		}else {
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'> '"+"Invoice  Page Not verifeid"+"'</span>");
+		}
+
+		oGenericUtils.SetVal(driver, By.xpath(invoiceNumber), XLTestData.get("invoiceNumber").toString(),"Invoice Text Box",basetest);
+
+		//click on Search Invoice
+		oGenericUtils.clickButton(driver, By.xpath(searchInvoice),"Click on Invoice Search",basetest);
+
+		oGenericUtils.waiForPageLoad(50);
+		WebElement invoiceElement = driver.findElement(By.xpath(invoiceNumberText));
+
+		String invoiceNumberText = invoiceElement.getAttribute("previousvalue");
+
+		if(invoiceNumberText.contains("#"))
+
+			Assert.assertTrue("Invoice Verified Successfully", true);
+		else
+			Assert.assertFalse("InvoiceNotVerified", false);
+
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(next),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(30);
+
+
+
+
+
+		List<WebElement> lineAdjustTableRowCount=driver.findElements(By.xpath(lineAdjustTable));
+		lineAdjustTableRowCount=driver.findElements(By.xpath(lineAdjustTable));
+
+		int  size =lineAdjustTableRowCount.size();
+		boolean flag=false;
+		for(int i=1; i<=size ; i++){
+			List<WebElement> tableHead = driver.findElements(By.xpath("//table[@id='invoicelines_splits']/tbody/tr/td/div"));
+			int headSize = tableHead.size();
+			for(int j=1;j<=headSize;j++){
+				String headText = driver.findElement(By.xpath("(//table[@id='invoicelines_splits']/tbody/tr/td/div)["+j+"]")).getText().trim();
+				if(headText.contains("FULL CREDIT")){
+
+					oGenericUtils.clickButton(driver, By.xpath("//table[@id='invoicelines_splits']/tbody/tr[contains(@id,'invoicelines_row_"+i+"')]/td["+j+"]"),"Click on NET CREDIT AMOUNT",basetest);
+					oGenericUtils.waiForPageLoad(2);
+					//click on Full Credit Check box
+					oGenericUtils.clickButton(driver, By.xpath(fullcredit_checkbox),"Click on Ok Button",basetest);
+					oGenericUtils.waiForPageLoad(2);
+					//click on Ok button
+					oGenericUtils.clickButton(driver, By.xpath(ok_btn),"Click on Ok Button",basetest);
+					flag = true;
+					break;
+				}
+			}
+			if(flag==true)
+				break;
+
+
+		}
+
+		oGenericUtils.waiForPageLoad(2);
+		oGenericUtils.clickButton(driver, By.xpath(adjustmentPage),"Click on Adjustments",basetest);
+		oGenericUtils.waiForPageLoad(2);
+
+
+
+		//click on next
+		oGenericUtils.clickButton(driver, By.xpath(secondarynext),"Click on next",basetest);
+
+		oGenericUtils.waiForPageLoad(10);
+
+
+		//Enter Comments
+
+		oGenericUtils.setText(driver, Comments, "QA");
+
+		//click on finish
+		oGenericUtils.clickButton(driver, By.xpath(finish),"Click on finish",basetest);
+
+		oGenericUtils.waiForPageLoad(12);
+
+		String caseNumberText =  oGenericUtils.getTextOfElement(driver, caseNumber);
+		if(caseNumberText.length()>0){
+			basetest.test.log(Status.INFO, "Case Number :"+caseNumberText);
+		}
+		oGenericUtils.waiForPageLoad(6);
+		oGenericUtils.clickButton(driver, By.xpath(goToButton), "Go To Case", basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+		caseValidations.autoapprovalWorkFlowValidations( driver, XLTestData, basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+
+		caseValidations.validate_Amountdue( driver,XLTestData,basetest);
+
+		oGenericUtils.waiForPageLoad(8);
+		
+		
+		}
 
 
 }

@@ -21,7 +21,7 @@ public class TS_NS_6710_Approval_WorkFlow_Market_Over10K {
 
 	private BaseTest basetest;
 	public static Excel_Reader excelReader;
-	public static int i=2227;
+	public static int i=6710;
 	int HistoryRowNumber=0;
 	int passCount=0, FailCount=0;
 	public static String TestDataPath="";
@@ -47,7 +47,7 @@ public class TS_NS_6710_Approval_WorkFlow_Market_Over10K {
 	//==============>
 	@BeforeClass
 	public void test() throws FileNotFoundException, IOException {
-		TestDataPath = System.getProperty("user.dir") + "\\Data\\iHeart_NetSuiteTestData_RemoveAgencyCommission.xlsx";
+		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_ApprovalWorkflow.xlsx";
 		System.out.println("Test Data Path: "+TestDataPath);
 		excelReader=new Excel_Reader(TestDataPath);
 		excelReader.cFileNameWithPath = TestDataPath;
