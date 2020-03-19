@@ -22,7 +22,7 @@ import com.netsuite.common.NS_LoginPage;
 public class TS_NS_6698_SplitInvoiceByProductType extends BaseReport{
 	private BaseTest basetest;
 	public static Excel_Reader excelReader;
-	public static int i=6697;
+	public static int i=6698;
 	int HistoryRowNumber=0;
 	int passCount=0, FailCount=0;
 	public static String TestDataPath="";
@@ -36,11 +36,11 @@ public class TS_NS_6698_SplitInvoiceByProductType extends BaseReport{
 	@BeforeTest(alwaysRun=true)
 	public void getTest() throws IOException {
 		basetest=new BaseTest();
-		basetest.getTest(this.getClass().getSimpleName(),"Split Invoice-Split By Product");
+		basetest.getTest(this.getClass().getSimpleName(),"Adjustment Tool");
 	}
 	@BeforeClass
 	public void test() throws FileNotFoundException, IOException {
-		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_RemoveAgencyCommission.xlsx";
+		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_SplitInvoice.xlsx";
 		System.out.println("Test Data Path: "+TestDataPath);
 		excelReader=new Excel_Reader(TestDataPath);
 		excelReader.cFileNameWithPath = TestDataPath;
@@ -48,13 +48,16 @@ public class TS_NS_6698_SplitInvoiceByProductType extends BaseReport{
 		excelReader.cTcID = "TestCaseID";
 		excelReader.cTcValue = "1";
 		XLTestData = new HashMap<String, String>();
-		XLTestData = excelReader.readExcel("TC_NST_" + Integer.toString(i));		
+		XLTestData = excelReader.readExcel("NS-" + Integer.toString(i));		
 	}
 	
 	@Test()
-	public void splitInvoiceSplitStationTest() throws InterruptedException{
+	public void TS_NS_6698_SplitInvoiceByProductType() throws InterruptedException{
+		
 		try {
-		basetest.test = basetest.extent.createTest("Split Invoice - Split By Product","Split Invoice - Split By Product");
+			basetest.test = basetest.extent.createTest(XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString(), XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString());
+			 basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution started"+"'</span>");
+		
 		driver = oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(), XLTestData, "", basetest);
 		//Login Application
 		oLoginPage.NetSuiteLogin(driver, XLTestData,basetest);
@@ -71,6 +74,8 @@ public class TS_NS_6698_SplitInvoiceByProductType extends BaseReport{
 		}catch(Exception e) {
 			System.out.println(" Exception in splitInvoiceSplitStationTest() :"+e);
 		}
+		oLoginPage.NetSuiteLogout(driver, basetest);
+		basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution completed"+"'</span>");
 	}
 	
 	@AfterMethod(alwaysRun = true)

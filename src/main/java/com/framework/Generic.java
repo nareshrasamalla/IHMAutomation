@@ -158,12 +158,12 @@ public class Generic
 		ScreenShot screen =new ScreenShot();
 		String EcomTitle=driver.getTitle();
 		if (EcomTitle.contains("Home")) {
-			basetest.test.log(Status.PASS,XLTestData.get("Environment").toString() + " Environment URL "+XLTestData.get("Sales_ Order_URL").toString() + "  is Launched Successfully");
+			basetest.test.log(Status.PASS,XLTestData.get("Environment").toString() + " Environment URL "+XLTestData.get("Sales_ Order_URL").toString() + "  is Launched ");
 			return true;
 		}
 		else {
 			String FileName = screen .getScreenshot(driver);
-			basetest.test.log(Status.FAIL,XLTestData.get("Environment").toString() + " Environment URL "+XLTestData.get("Sales_ Order_URL").toString() + "  is not  Launched Successfully<br><a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
+			basetest.test.log(Status.FAIL,XLTestData.get("Environment").toString() + " Environment URL "+XLTestData.get("Sales_ Order_URL").toString() + "  is not  Launched <br><a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
 			return false;
 		}
 
@@ -310,7 +310,7 @@ public class Generic
 							sList.get(i).click();
 
 							blnResult=true;
-							Verify(sText+" is clicked sucessfully","PASSED",basetest);
+							Verify("Clicked on : " +sText,"PASSED",basetest);
 							break;
 						}
 					}
@@ -326,12 +326,12 @@ public class Generic
 			if(blnResult!=true) {
 				Verify(sText+" is not found","FAILED",basetest);
 				String FileName = screen .getScreenshot(driver);
-				basetest.test.log(Status.FAIL,""+sText+" is not Edited/Clicked successfully <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
+				basetest.test.log(Status.FAIL,""+sText+" is not Edited/Clicked  <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
 
 			}
 		}catch(Exception e) {
 			Verify(sText+"  is not found","FAILED",basetest);
-			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+sText+"' is not Edited/Clicked successfully"+"'</span>");
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+sText+"' is not Edited/Clicked "+"'</span>");
 			driver.quit();
 		}
 		return blnResult;
@@ -352,7 +352,7 @@ public class Generic
 							sList.get(i).clear();
 							sList.get(i).sendKeys(sInputVal);
 							blnResult=true;
-							Verify(sInputVal  +" is Entered Successfully in "+  sText,"PASSED",basetest);
+							Verify(sInputVal  +" is Entered  in "+  sText,"PASSED",basetest);
 							break;
 						}
 					}
@@ -367,12 +367,12 @@ public class Generic
 			if(blnResult!=true) {
 				Verify(sText+" is not found","FAILED",basetest);
 				String FileName = screen .getScreenshot(driver);
-				basetest.test.log(Status.FAIL,""+sInputVal+" is not Entered/Selected successfully <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
+				basetest.test.log(Status.FAIL,""+sInputVal+" is not Entered/Selected  <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
 
 			}
 		}catch(Exception e) {
 			Verify(sText+"  is not found","FAILED",basetest);
-			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+sText+"' is not Entered/Selected successfully"+"'</span>");
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+sText+"' is not Entered/Selected "+"'</span>");
 			driver.quit();
 		}
 		return blnResult;
@@ -392,7 +392,7 @@ public class Generic
 					{
 						if(sList.get(i).isDisplayed() && sList.get(i)!=null && sList.get(i).isEnabled()) {
 							blnResult=true;
-							Verify(sText+" is displayed Successfully","PASSED",basetest);
+							Verify(sText+" is displayed ","PASSED",basetest);
 							basetest.test.log(Status.PASS,"<span style='font-weight:bold;color:blue'> '"+sText+"'</span>");
 							break;
 						}
@@ -426,8 +426,8 @@ public class Generic
 			//builder = new Actions(driver);
 			builder.moveToElement(webElement).perform();
 			Thread.sleep(5000);
-			System.out.println("Sucessfully Mouse hovered to "+sInputval);
-			Verify("Sucessfully Mouse hovered to "+sInputval,"PASSED",basetest);
+			System.out.println(" Mouse hovered to "+sInputval);
+			Verify(" Mouse hovered to "+sInputval,"PASSED",basetest);
 		}catch(Exception e) {
 			Verify(sInputval+" is not found","FAILED",basetest);
 			String FileName = screen .getScreenshot(driver);
@@ -453,7 +453,7 @@ public class Generic
 
 							blnResult=true;
 							System.out.println("Loading Popup:="+i);
-							Verify(sText+" is Displayed Sucessfully","PASSED");
+							Verify(sText+" is Displayed ","PASSED");
 							break;
 
 						}
@@ -468,9 +468,9 @@ public class Generic
 			}while ((blnResult!=true) && (iTimer!=30));
 			//Flag returns false
 			if(blnResult!=true) {
-				Verify(sText+" is Not Displayed Sucessfully","FAILED");
+				Verify(sText+" is Not Displayed ","FAILED");
 				String FileName = screen .getScreenshot(driver);
-				basetest.test.log(Status.FAIL,""+sText+" is Not Displayed Sucessfully <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
+				basetest.test.log(Status.FAIL,""+sText+" is Not Displayed  <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
 			}
 		}catch(Exception e) {
 			Verify(sText+" is not found","FAILED");
@@ -498,7 +498,7 @@ public class Generic
 							robot.keyRelease(KeyEvent.VK_ENTER);
 							robot.delay(200);
 							blnResult=true;
-							Verify(sInputVal+"is Entered Successfully in "+sText,"PASSED",basetest);
+							Verify(sInputVal+"is Entered  in "+sText,"PASSED",basetest);
 							break;
 						}
 					}
@@ -512,11 +512,11 @@ public class Generic
 			if(blnResult!=true) {
 				Verify(sText+" is not found","FAILED",basetest);
 				String FileName = screen .getScreenshot(driver);
-				basetest.test.log(Status.FAIL,""+sInputVal+" is not Entered/Selected successfully <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
+				basetest.test.log(Status.FAIL,""+sInputVal+" is not Entered/Selected  <br> <a href='..\\target\\Screenshots\\"+FileName+".png'>Screenshot</a>");
 			}
 		}catch(Exception e) {
 			Verify(sText+"  is not found","FAILED",basetest);
-			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+sText+"' is not Entered/Selected successfully"+"'</span>");
+			basetest.test.log(Status.FAIL,"<span style='font-weight:bold;color:blue'>'"+sText+"' is not Entered/Selected "+"'</span>");
 			driver.quit();
 		}
 		return blnResult;
@@ -742,7 +742,7 @@ public class Generic
 								sList.get(i).click();
 								blnResult=true;
 
-								Verify(sText+":=  Element clicked sucessfully","PASSED",basetest);
+								Verify(sText+":=  Element clicked ","PASSED",basetest);
 								break;
 
 							}
@@ -778,7 +778,7 @@ public class Generic
 								sList.get(i).clear();
 								sList.get(i).sendKeys(sInputVal);
 								blnResult=true;
-								Verify("Value entered sucessfully:="+sInputVal,"PASSED",basetest);
+								Verify("Value entered :="+sInputVal,"PASSED",basetest);
 								break;
 
 							}
@@ -811,7 +811,7 @@ public class Generic
 							if(sList.get(i).isDisplayed() && sList.get(i)!=null && sList.get(i).isEnabled()) {
 
 								blnResult=true;
-								Verify(sText+":=  Element displayed sucessfully","PASSED",basetest);
+								Verify(sText+":=  Element displayed ","PASSED",basetest);
 								break;
 
 							}
@@ -843,7 +843,7 @@ public class Generic
 				//builder = new Actions(driver);
 				builder.moveToElement(webElement).perform();
 				Thread.sleep(1000);
-				System.out.println("Sucessfully Mouse hovered:="+sObjectType);
+				System.out.println(" Mouse hovered:="+sObjectType);
 			}catch(Exception e) {
 				Verify("Element not found:="+sObjectType,"FAILED",basetest);
 				driver.quit();
@@ -883,7 +883,7 @@ public class Generic
 
 								blnResult=true;
 								System.out.println("Loading Popup:="+i);
-								Verify(sText+":=  Element displayed sucessfully","PASSED");
+								Verify(sText+":=  Element displayed ","PASSED");
 								break;
 
 							}
@@ -922,7 +922,7 @@ public class Generic
 
 								robot.delay(200);
 								blnResult=true;
-								Verify("Value entered sucessfully:="+sInputVal,"PASSED",basetest);
+								Verify("Value entered :="+sInputVal,"PASSED",basetest);
 								break;
 
 							}

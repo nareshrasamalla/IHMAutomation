@@ -36,7 +36,7 @@ public class TS_NS_6701_SplitInvoiceInvalidInvoice extends BaseReport{
 	@BeforeTest(alwaysRun=true)
 	public void getTest() throws IOException {
 		basetest=new BaseTest();
-		basetest.getTest(this.getClass().getSimpleName(),"Split Invoice-Split Station");
+		basetest.getTest(this.getClass().getSimpleName(),"Adjustment Tool");
 		Runtime rt = Runtime.getRuntime();
 		Process proc = rt.exec("taskkill /im chromedriver.exe /f /t");
 	}
@@ -50,12 +50,13 @@ public class TS_NS_6701_SplitInvoiceInvalidInvoice extends BaseReport{
 		excelReader.cTcID = "TestCaseID";
 		excelReader.cTcValue = "1";
 		XLTestData = new HashMap<String, String>();
-		XLTestData = excelReader.readExcel("TC_NS_" + Integer.toString(i));		
+		XLTestData = excelReader.readExcel("NS-" + Integer.toString(i));		
 	}
 	
 	@Test()
-	public void splitInvoiceSplitStationTest() throws InterruptedException{
-		basetest.test = basetest.extent.createTest("Split Invoice - Split Station","Split Invoice - Split Station");
+	public void TS_NS_6701_SplitInvoiceInvalidInvoice() throws InterruptedException{
+		basetest.test = basetest.extent.createTest(XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString(), XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString());
+		 basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution started"+"'</span>");
 		driver = oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(), XLTestData, "", basetest);
 		//Login Application
 		oLoginPage.NetSuiteLogin(driver, XLTestData,basetest);
@@ -65,6 +66,8 @@ public class TS_NS_6701_SplitInvoiceInvalidInvoice extends BaseReport{
 		//selecting new sales order through list
 		 oSalesOrderNetsuite.selectAdjSplBillingInBilling(driver, XLTestData, basetest);		
 		 oSalesOrderNetsuite.verifyInvalidInvoiceMessage(driver, XLTestData, basetest);
+		 oLoginPage.NetSuiteLogout(driver, basetest);
+		 basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution completed"+"'</span>");
 	}
 	
 	@AfterMethod(alwaysRun = true)

@@ -3,18 +3,21 @@ package com.framework;
 import java.awt.AWTException; 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 
 	
 	public class PDFValidation {
 
-	       public String[] getPDFData(String filePath) throws IOException, InterruptedException, AWTException {
+	       public String[] getPDFData(String filePath,HashMap<String, String> XLTestData) throws IOException, InterruptedException, AWTException {
 	              Thread.sleep(4000);
 	              
-	              String filesName="report";
+	              String fileName= XLTestData.get("invoiceNumber");
 	        
-	              System.out.println("File name :"+filesName);
+	              System.out.println("Invoice Number : "+fileName);
 	              PDFManager pdfManager = new PDFManager();
+	              
+	              System.out.println(filePath);
 
 	              // Get the PDF file name
 	              File dir = new File(filePath);
@@ -23,15 +26,16 @@ import java.io.IOException;
 	              if (files == null || files.length == 0) {
 	                     //     flag = false;
 	              }
-	              for (int i = 1; i < files.length; i++) {
-	                     if(files[i].getName().contains(filesName)) {
-	                           System.out.println("file name: "+files[i].getName());
-	                           filesName=files[i].getName();
+	              for (int i = 0; i < files.length; i++) {
+	                     if(files[i].getName().contains(fileName)) {
+	                           System.out.println("file name found as : "+files[i].getName());
+	                           fileName=files[i].getName();
 	                     }
 	              }
-	              pdfManager.setFilePath(filePath+"\\"+filesName+".pdf");
+	              pdfManager.setFilePath(filePath+"\\"+fileName);
+	           
 
-	              //pdfManager.setFilePath("C:\\Users\\Prl_bhanu.vutukuri"+"\\Downloads\\"+filesName);
+	            //  pdfManager.setFilePath("D:\\iHeartMedia\\Project_iheart\\RemoveAgencyCommissionPDFFile"+filesName);
 
 	              String pdf =pdfManager.ToText();
 	              String[] words = pdf.split(":");

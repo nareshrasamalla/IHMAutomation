@@ -1,26 +1,30 @@
-package com.scripts.netSuite.approvalWorkflow;
+package com.scripts.netSuite.issueCreditToClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.framework.BaseReport;
 import com.framework.BaseTest;
 import com.framework.Excel_Reader;
 import com.framework.Generic;
 import com.netsuite.common.NS_Billing_AdjustmentAndSpecialBilling;
 import com.netsuite.common.NS_LoginPage;
 
-public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseRate {
+public class TS_NS_6624_issue_Credit_to_Client_PartialPaid_CreditToReviseInvoice_Digital_CreditToInvoice extends BaseReport {
+	
 	private BaseTest basetest;
 	public static Excel_Reader excelReader;
-	public static int i=6692;;
+	public static int i=6624;;
 	int HistoryRowNumber=0;
 	int passCount=0, FailCount=0;
 	public static String TestDataPath="";
@@ -37,7 +41,7 @@ public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseR
 	@BeforeTest(alwaysRun=true)
 	public void getTest() throws IOException {
 		basetest=new BaseTest();
-		basetest.getTest(this.getClass().getSimpleName(),"Remove Agency Commission");
+		basetest.getTest(this.getClass().getSimpleName(),"Adjustment Tool");
 		/*Runtime rt = Runtime.getRuntime();
 		Process proc = rt.exec("taskkill /im chromedriver.exe /f /t");*/
 
@@ -46,7 +50,7 @@ public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseR
 	//==============>
 	@BeforeClass
 	public void test() throws FileNotFoundException, IOException {
-		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_ApprovalWorkflow.xlsx";
+		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_IssueCreditToclient.xlsx";
 		System.out.println("Test Data Path: "+TestDataPath);
 		excelReader=new Excel_Reader(TestDataPath);
 		excelReader.cFileNameWithPath = TestDataPath;
@@ -54,7 +58,7 @@ public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseR
 		excelReader.cTcID = "TestCaseID";
 		excelReader.cTcValue = "1";
 		XLTestData = new HashMap<String, String>();
-		XLTestData = excelReader.readExcel("TC_NST_" + Integer.toString(i));
+		XLTestData = excelReader.readExcel("NS-" + Integer.toString(i));
 		
 		
 		
@@ -74,12 +78,13 @@ public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseR
 		}
 	
 	@Test
-	public void TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseRate() throws InterruptedException
+	public void TS_NS_6624_issue_Credit_to_Client_PartialPaid_CreditToReviseInvoice_Digital_CreditToInvoice() throws InterruptedException
 	{
 		System.out.println(XLTestData.get("NetSuite_URL").toString());	
 		System.out.println(XLTestData.get("NetEmail").toString());
 		System.out.println(XLTestData.get("NetPassword").toString());
-		basetest.test = basetest.extent.createTest("CA_"+XLTestData.get("Scenario").toString(),"CA_"+XLTestData.get("Scenario").toString());
+		 basetest.test = basetest.extent.createTest(XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString(), XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString());
+		 basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution started"+"'</span>");
 		//Launch URL
 		//driver=oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(),XLTestData,basetest);
 		driver = oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(), XLTestData, filePathToDownload, basetest);
@@ -89,15 +94,20 @@ public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseR
 			//choosing role
 			oSalesOrderNetsuite.SelectRoleFOrNetSuiteAsAdmin(driver, XLTestData, basetest);
 			
-			//selecting new sales order through list
-			oSalesOrderNetsuite.selectAdjSplBillingInBilling(driver, XLTestData, basetest);
+			//Select Adjustments
+			oSalesOrderNetsuite.selectAdjRequestInBilling(driver, XLTestData, basetest);
+			
 			
 			//issue credit to client
-			oSalesOrderNetsuite.approvalWorkFlow_CreditRevise_invoice_over10k(driver, XLTestData, basetest);
+			oSalesOrderNetsuite.issue_Credit_to_Client_PartialPaid_CreditToReviseInvoice_CreditToInvoice(driver, XLTestData, basetest);
+			
+			oGenericUtils.waiForPageLoad(3);
 			
 			//logout from Netsuite
 			oLoginPage.NetSuiteLogout(driver, basetest);
-
+	
+			basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution completed"+"'</span>");
+			
 	}
 	
 	@AfterMethod(alwaysRun = true)
@@ -110,5 +120,23 @@ public class TS_NS_6692_Approval_Workflow_National_over_10k_creditRebill_ReviseR
 
 	}
 
+	//=========================>	  
+	@AfterClass(alwaysRun = true)
+	public void LogsOut() throws InterruptedException, IOException {
+		String ClassName = this.getClass().getSimpleName();
+		LogScenario(ClassName, passCount, FailCount);
+		if(driver != null) {
+			{
+				if(gen.isAlertPresents(driver))
+				{
+					Alert alert = driver.switchTo().alert();
+					alert.accept();
+				}
+				driver.close();
+				   driver.quit();
+			}
+
+		}
+	}
 
 }

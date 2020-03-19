@@ -1,9 +1,11 @@
 package com.netsuite.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -20,6 +22,8 @@ import org.testng.Assert;
 import com.aventstack.extentreports.Status;
 import com.framework.BaseTest;
 import com.framework.Generic;
+
+//import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class NS_LoginPage {
 	BaseTest basetest;
@@ -60,13 +64,18 @@ public class NS_LoginPage {
 
 	//Instance creation
 	Generic oGenericUtils=new Generic();
-
+	
+	
 	//===========================Launch NetSuite===========================================================>
 	public WebDriver LaunchNetSuiteApp(String sURL,HashMap<String, String> XLTestData,String filePathInString,BaseTest basetest) {
 		WebDriver driver = null;
 		try {
 
+			FileInputStream fis = new FileInputStream("D:\\iHeart\\Netsuite_Auto\\Netsuite_Auto\\Obeject.properties");
+			Properties p = new Properties();
+			p.load(fis);
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\resources\\chromedriver.exe");
+			
 			ChromeOptions options = new ChromeOptions();   
 
 			Map<String,Object> prefs = new HashMap<String,Object>();
@@ -92,7 +101,7 @@ public class NS_LoginPage {
 			//Page Maximize
 			//driver.manage().window().maximize();				  
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-			basetest.test.log(Status.PASS, XLTestData.get("Environment").toString() + " Environment URL "+XLTestData.get("NetSuite_URL").toString() + "  is Launched Successfully");
+			basetest.test.log(Status.PASS, XLTestData.get("Environment").toString() + " Environment URL "+p.getProperty("url").toString() + "  is Launched ");
 
 		}catch(Exception e) {
 			oGenericUtils.Verify("Object not found:="+e.getMessage(), "FAILED",basetest);
@@ -109,13 +118,16 @@ public class NS_LoginPage {
 	 ##############################################################*/
 	public void NetSuiteLogin(WebDriver driver,HashMap<String, String> XLTestData,BaseTest basetest) {
 		try {
-
+			FileInputStream fis = new FileInputStream("D:\\iHeart\\Netsuite_Auto\\Netsuite_Auto\\Obeject.properties");
+			Properties p = new Properties();
+			p.load(fis);
+			
 			//Enter Username
-			oGenericUtils.SetVal(driver, By.xpath(username), XLTestData.get("NetEmail").toString(),"Username textbox",basetest);
+			oGenericUtils.SetVal(driver, By.xpath(username), p.getProperty("email").toString(),"Username textbox",basetest);
 
 			//Enter Password
-			driver.findElement(By.xpath(pass)).sendKeys(XLTestData.get("NetPassword").toString());
-			basetest.test.log(Status.INFO,"******* is Entered Successfully in Password Text Box");
+			driver.findElement(By.xpath(pass)).sendKeys(p.getProperty("password").toString());
+			basetest.test.log(Status.INFO,"******* is Entered  in Password Text Box");
 
 			//Click Login Button
 			oGenericUtils.clickButton(driver, By.id("submitButton"),"Submit Button",basetest);
@@ -123,7 +135,7 @@ public class NS_LoginPage {
 
 			if(driver.findElements(By.xpath(elementhomepage)).size() > 0) 
 			{
-				basetest.test.log(Status.INFO, "User is successfully logged in to NetSuite");
+				basetest.test.log(Status.INFO, "User is  logged in to NetSuite");
 
 			}
 			else {
@@ -139,11 +151,11 @@ public class NS_LoginPage {
 				{
 					if(driver.getTitle().contains("Two-factor login challenge")) {
 
-						basetest.test.log(Status.FAIL, "User is not successfully logged in to NetSuite/Pass Code is Expired");
+						basetest.test.log(Status.FAIL, "User is not  logged in to NetSuite/Pass Code is Expired");
 						driver.close();
 					}
 
-					basetest.test.log(Status.FAIL, "User is not successfully logged in to NetSuite/May NewPop Occurs in Netsuite HomePage");
+					basetest.test.log(Status.FAIL, "User is not  logged in to NetSuite/May NewPop Occurs in Netsuite HomePage");
 					Assert.assertTrue(false);
 				}
 			}
@@ -166,11 +178,11 @@ public class NS_LoginPage {
 			//Click on Logout Page
 			oGenericUtils.navigateMouseToElement(driver, By.xpath(move),"Logout button",basetest);
 			oGenericUtils.clickButton(driver, By.xpath(logout),"Logout button",basetest);
-			basetest.test.log(Status.PASS,"Logout from Netsuite Application Successfully");
+			basetest.test.log(Status.PASS,"Logout from Netsuite Application ");
 
 		}catch(Exception e) {
 			oGenericUtils.Verify("Object not found:="+e.getMessage(), "FAILED",basetest);
-			basetest.test.log(Status.FAIL,"Logout from netsuite application not happens");
+			basetest.test.log(Status.FAIL,"Issue in Logout from netsuite applicatio");
 		}
 	}
 

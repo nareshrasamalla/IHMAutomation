@@ -35,7 +35,7 @@ public class PDFManager {
 //	            FileInputStream fr = new FileInputStream(filePath);
 //	            parser = new PDFParser((RandomAccessRead) fr); // update for PDFBox V 2.0
 	//
-//	            parser.parse();
+//	            parser.parse()
 //	                         cosDoc = parser.getDocument();
 //	                         pdfStripper = new PDFTextStripper();
 //	                         pdDoc = new PDDocument(cosDoc);

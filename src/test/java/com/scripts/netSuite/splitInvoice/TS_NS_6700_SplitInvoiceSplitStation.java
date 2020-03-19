@@ -36,12 +36,12 @@ public class TS_NS_6700_SplitInvoiceSplitStation extends BaseReport {
 	@BeforeTest(alwaysRun = true)
 	public void getTest() throws IOException {
 		basetest = new BaseTest();
-		basetest.getTest(this.getClass().getSimpleName(), "Split Invoice-Split Station");
+		basetest.getTest(this.getClass().getSimpleName(), "Adjustment Tool");
 	}
 
 	@BeforeClass
 	public void test() throws FileNotFoundException, IOException {
-		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_RemoveAgencyCommission.xlsx";
+		TestDataPath = System.getProperty("user.dir") + "\\Data\\NetSuiteTestData_SplitInvoice.xlsx";
 		System.out.println("Test Data Path: " + TestDataPath);
 		excelReader = new Excel_Reader(TestDataPath);
 		excelReader.cFileNameWithPath = TestDataPath;
@@ -49,12 +49,14 @@ public class TS_NS_6700_SplitInvoiceSplitStation extends BaseReport {
 		excelReader.cTcID = "TestCaseID";
 		excelReader.cTcValue = "1";
 		XLTestData = new HashMap<String, String>();
-		XLTestData = excelReader.readExcel("TC_NST_" + Integer.toString(i));
+		XLTestData = excelReader.readExcel("NS-" + Integer.toString(i));
 	}
 
 	@Test()
-	public void splitInvoiceSplitStationTest() throws InterruptedException {
-		basetest.test = basetest.extent.createTest("Split Invoice - Split Station", "Split Invoice - Split Station");
+	public void TS_NS_6700_SplitInvoiceSplitStation() throws InterruptedException {
+		basetest.test = basetest.extent.createTest(XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString(), XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString());
+		 basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution started"+"'</span>");
+	
 		driver = oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(), XLTestData, "", basetest);
 		// Login Application
 		oLoginPage.NetSuiteLogin(driver, XLTestData, basetest);
@@ -68,6 +70,8 @@ public class TS_NS_6700_SplitInvoiceSplitStation extends BaseReport {
 		String splitingType = "SplitStation";
 
 		oSalesOrderNetsuite.splitInvoiceByType(driver, scenario, invoiceNO, splitingType, basetest);
+		oLoginPage.NetSuiteLogout(driver, basetest);
+		basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution completed"+"'</span>");
 	}
 
 	@AfterMethod(alwaysRun = true)

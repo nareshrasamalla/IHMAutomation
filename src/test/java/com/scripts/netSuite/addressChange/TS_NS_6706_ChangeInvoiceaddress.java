@@ -4,7 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -65,7 +68,9 @@ public class TS_NS_6706_ChangeInvoiceaddress extends BaseReport {
 			System.out.println(XLTestData.get("NetSuite_URL").toString());	
 			System.out.println(XLTestData.get("NetEmail").toString());
 			System.out.println(XLTestData.get("NetPassword").toString());
-			basetest.test = basetest.extent.createTest("CA_"+XLTestData.get("Scenario").toString(),"CA_"+XLTestData.get("Scenario").toString());
+			basetest.test = basetest.extent.createTest(XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString(), XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString());
+			 basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution started"+"'</span>");
+
 			//Launch URL
 			driver=oLoginPage.LaunchNetSuiteApp(XLTestData.get("NetSuite_URL").toString(),XLTestData,"",basetest);
 
@@ -84,7 +89,35 @@ public class TS_NS_6706_ChangeInvoiceaddress extends BaseReport {
 			
 			//logout from Net Suite
 			oLoginPage.NetSuiteLogout(driver, basetest);
-
+			basetest.test.info("<span style='font-weight:bold;color:blue'>'"+ XLTestData.get("TestCaseID")+":"+XLTestData.get("TestFlow").toString()+ " Execution completed"+"'</span>");
 		}
 
+		//=========================>
+		@AfterMethod(alwaysRun = true)
+		public void ExtentReport() {
+			basetest.extent.flush();
+			if(driver != null)
+			{driver.close();
+			// driver.quit();
+			}
+		}
+
+		//=========================>	  
+		@AfterClass(alwaysRun = true)
+		public void LogsOut() throws InterruptedException, IOException {
+			String ClassName = this.getClass().getSimpleName();
+			LogScenario(ClassName, passCount, FailCount);
+			if(driver != null) {
+				{
+					if(gen.isAlertPresents(driver))
+					{
+						Alert alert = driver.switchTo().alert();
+						alert.accept();
+					}
+					driver.close();
+					   driver.quit();
+				}
+
+			}
+		}
 }
